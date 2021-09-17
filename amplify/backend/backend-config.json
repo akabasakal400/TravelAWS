@@ -4,21 +4,6 @@
       "build": true,
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
-    },
-    "emailAntigua": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": [
-        {
-          "category": "api",
-          "resourceName": "graphAntigua",
-          "attributes": [
-            "GraphQLAPIIdOutput",
-            "GraphQLAPIEndpointOutput"
-          ]
-        }
-      ]
     }
   },
   "api": {
@@ -35,22 +20,6 @@
           ]
         }
       ]
-    },
-    "graphAntigua": {
-      "service": "AppSync",
-      "providerPlugin": "awscloudformation",
-      "output": {
-        "authConfig": {
-          "defaultAuthentication": {
-            "authenticationType": "API_KEY",
-            "apiKeyConfig": {
-              "apiKeyExpirationDays": 120,
-              "description": "emailService"
-            }
-          },
-          "additionalAuthenticationProviders": []
-        }
-      }
     }
   }
 }
