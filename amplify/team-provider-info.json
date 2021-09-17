@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-backendantigua-dev-84449-authRole",
+      "UnauthRoleArn": "arn:aws:iam::250512468729:role/amplify-backendantigua-dev-84449-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::250512468729:role/amplify-backendantigua-dev-84449-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-backendantigua-dev-84449-deployment",
+      "UnauthRoleName": "amplify-backendantigua-dev-84449-unauthRole",
+      "StackName": "amplify-backendantigua-dev-84449",
+      "StackId": "arn:aws:cloudformation:us-east-2:250512468729:stack/amplify-backendantigua-dev-84449/d77fc9d0-04e9-11ec-9870-02acd772112c",
+      "AmplifyAppId": "d2fk9zj96sg3it"
+    }
+  }
+}
