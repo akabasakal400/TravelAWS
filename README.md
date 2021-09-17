@@ -1,8 +1,6 @@
-<<<<<<< HEAD
-# AntiguaTravelAWS
 Antigua Travel Project
+# AntiguaTravelAWS
 =======
-# AntiguaTravel
 
 ## Build Setup
 
