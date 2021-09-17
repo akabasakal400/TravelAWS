@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+# AntiguaTravelAWS
+Antigua Travel Project
+=======
 # AntiguaTravel
 
 ## Build Setup
@@ -67,3 +71,4 @@ More information about the usage of this directory in [the documentation](https:
 This directory contains your Vuex store files. Creating a file in this directory automatically activates Vuex.
 
 More information about the usage of this directory in [the documentation](https://nuxtjs.org/docs/2.x/directory-structure/store).
+>>>>>>> 08e7cc73d3b39aafebfe3ddebcb45512e0e2786f

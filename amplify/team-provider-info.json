@@ -10,6 +10,18 @@
       "StackName": "amplify-backendantigua-dev-84449",
       "StackId": "arn:aws:cloudformation:us-east-2:250512468729:stack/amplify-backendantigua-dev-84449/d77fc9d0-04e9-11ec-9870-02acd772112c",
       "AmplifyAppId": "d2fk9zj96sg3it"
+    },
+    "categories": {
+      "function": {
+        "backendantigua31c77856": {
+          "deploymentBucketName": "amplify-backendantigua-dev-84449-deployment",
+          "s3Key": "amplify-builds/backendantigua31c77856-4a4f6146616a46756a39-build.zip"
+        },
+        "emailAntigua": {
+          "deploymentBucketName": "amplify-backendantigua-dev-84449-deployment",
+          "s3Key": "amplify-builds/emailAntigua-58795346727036324e7a-build.zip"
+        }
+      }
     }
   }
 }

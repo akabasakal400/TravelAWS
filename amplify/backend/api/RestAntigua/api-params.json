@@ -1,0 +1,35 @@
+{
+  "paths": [
+    {
+      "name": "/api",
+      "lambdaFunction": "backendantigua31c77856",
+      "privacy": {
+        "open": true
+      },
+      "policyResourceName": "/api"
+    }
+  ],
+  "resourceName": "RestAntigua",
+  "apiName": "RestAntigua",
+  "functionArns": [
+    {
+      "lambdaFunction": "backendantigua31c77856"
+    }
+  ],
+  "privacy": {
+    "auth": 0,
+    "unauth": 0,
+    "authRoleName": "amplify-backendantigua-dev-84449-authRole",
+    "unAuthRoleName": "amplify-backendantigua-dev-84449-unauthRole"
+  },
+  "dependsOn": [
+    {
+      "category": "function",
+      "resourceName": "backendantigua31c77856",
+      "attributes": [
+        "Name",
+        "Arn"
+      ]
+    }
+  ]
+}
