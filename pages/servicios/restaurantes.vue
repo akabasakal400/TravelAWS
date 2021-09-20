@@ -161,26 +161,16 @@
 
       </v-col>
 
-      <v-col cols="12" lg="9">
+      <v-col
+        cols="12" lg="9">
 
         <v-row>
 
-          <v-col cols="6" class="mt-12" v-if="restaurantes.listado && restaurantes.listado.length === 0">
-            <v-alert
-              border="left"
-              colored-border
-              type="warning"
-              elevation="2"
-            >
-              Lo sentimos, aún no hay restaurantes disponibles para mostrar.
-            </v-alert>
-          </v-col>
-
           <v-col cols="12"
                  lg="4"
-                 md="6"
+                 md="4"
                  sm="6"
-                 v-for="(restaurante, i) in restaurantes.listado"
+                 v-for="(restaurante, i) in restaurantes"
                  :key="i"
           >
 
@@ -201,24 +191,6 @@
                 <h4>
                   {{ restaurante.nombre }}
                 </h4>
-                <v-spacer/>
-                <h6>
-                  <span :class="VerificarHora(restaurante.abre, restaurante.cierra) === 'Cerrado' ?
-                  'red--text' : 'green--text'">
-                    {{ VerificarHora(restaurante.abre, restaurante.cierra) }}
-                  </span> -
-                  <v-tooltip bottom>
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-chip outlined color="black" small v-bind="attrs" v-on="on">
-                        <v-icon color="black" class="mr-1">fa fa-clock</v-icon>
-                        Horarios
-                      </v-chip>
-                    </template>
-                    <span> Todos los días de {{ $moment(restaurante.abre, "HH:mm:ss").format('h:mm a') }} -
-                  {{ $moment(restaurante.cierra, "HH:mm:ss").format('h:mm a')  }}</span>
-                  </v-tooltip>
-
-                </h6>
               </v-card-title>
 
               <v-card-text>
@@ -243,26 +215,33 @@
                   <v-icon class="mr-1"> fa fa-tags </v-icon>{{StringTags(restaurante.tags)}}
                 </div>
 
-                <div>{{ restaurante.descripcion ? restaurante.descripcion :
-                  "Este restaurante no cuenta con una descripción" }}</div>
+                <div>Small plates, salads & sandwiches - an intimate setting with 12 indoor seats plus patio seating.</div>
               </v-card-text>
-
-              <v-divider class="my-4"/>
 
               <v-card-actions>
 
-                <v-btn
-                  color="black"
-                  outlined
-                  @click=""
-                >
-                  <v-icon left color="secondary">
-                    fa fa-compass
-                  </v-icon>
-                  Explorar
-                </v-btn>
+                <v-spacer />
 
+                <v-btn
+                  icon
+                  @click="restaurante.showCardTags = !restaurante.showCardTags"
+                >
+                  <v-icon>{{ restaurante.showCardTags ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+                </v-btn>
               </v-card-actions>
+
+              <v-expand-transition>
+                <div v-show="restaurante.showCardTags">
+                  <v-divider></v-divider>
+
+                  <v-card-text>
+                    I'm a thing. But, like most politicians, he promised more than he could deliver.
+                    You won't have time for sleeping, soldier, not with all the bed making you'll be doing.
+                    Then we'll go with that data file! Hey, you add a one and two zeros to that or we walk!
+                    You're going to do his laundry? I've got to find a way to escape.
+                  </v-card-text>
+                </div>
+              </v-expand-transition>
 
             </v-card>
 
@@ -410,10 +389,6 @@
 
 export default {
 
-  mounted() {
-    this.ObtenerRestaurantes()
-  },
-
   data(){
     return{
       dialogos: {
@@ -424,9 +399,38 @@ export default {
         mapSearch: null,
         busqueda: null
       },
-      restaurantes: {
-        listado: []
-      },
+      restaurantes: [
+        {
+          nombre: 'Pollo Campero',
+          src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNm4K7Ta_s_JJPBffRH-ohoO229q-8f_opVw&usqp=CAU',
+          showCardTags: false,
+          tags: ['Comida rápida', 'Pollo Frito', 'Hamburguesas']
+        },
+        {
+          nombre: 'La Bruja',
+          src: 'https://media-cdn.tripadvisor.com/media/photo-o/1c/3a/d3/e8/nuevo-logo.jpg',
+          showCardTags: false,
+          tags: ['Comida Vegetariana']
+        },
+        {
+          nombre: "Hector's Bistro",
+          src: 'https://media-cdn.tripadvisor.com/media/photo-s/1d/1e/39/b0/hector-s-new-logo.jpg',
+          showCardTags: false,
+          tags: ['Crepas']
+        },
+        {
+          nombre: 'THAI-WOW',
+          src: 'https://media-cdn.tripadvisor.com/media/photo-s/1a/04/95/16/logo-for-thai-wow-restaurant.jpg',
+          showCardTags: false,
+          tags: ['Comida China']
+        },
+        {
+          nombre: "Randy's",
+          src: 'https://media-cdn.tripadvisor.com/media/photo-p/12/b1/04/98/logo.jpg',
+          showCardTags: false,
+          tags: ['Comida rápida']
+        }
+      ],
       filtros: [
         { texto: 'Hora Planeada', icono: 'fa fa-clock' },
         { texto: 'Fecha Planeada', icono: 'fa fa-calendar-day' },
@@ -445,46 +449,6 @@ export default {
   },
 
   methods: {
-
-    async ObtenerRestaurantes(){
-
-      await this.$api.post("/negocios/categoria", { categoria: "R" }).then( data => {
-
-        this.restaurantes.listado = data
-        let cont = 0
-        this.restaurantes.listado.forEach( restaurante => {
-
-          restaurante.showCardTags = false
-          restaurante.src = "https://picsum.photos/500/300?image="+(cont+35)
-          restaurante.tags = ["Comida rápida"]
-          cont++
-
-        } )
-
-      } )
-
-    },
-
-    VerificarHora(abre, cierra){
-
-      var format = 'hh:mm:ss'
-      var time = this.$moment(this.$moment(),format),
-        beforeTime = this.$moment(abre, format),
-        afterTime = this.$moment(cierra, format);
-
-      if (time.isBetween(beforeTime, afterTime)) {
-        console.log(time)
-        console.log(beforeTime)
-        console.log(afterTime)
-        return "Abierto"
-
-      } else {
-
-        return "Cerrado"
-
-      }
-
-    },
 
     MostrarDialogoMapa(){
       this.dialogos.mapa = true
