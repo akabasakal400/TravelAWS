@@ -25,7 +25,6 @@
     "font-awesome-picker": "^2.0.0",
     "nuxt": "^2.15.7",
     "nuxt-gmaps": "^1.2.10",
-    "nuxt-mail": "^3.0.11",
     "quasar": "^2.0.4",
     "sweetalert2": "^11.1.4",
     "v-icon-picker": "^1.0.3",

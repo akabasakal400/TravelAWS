@@ -840,7 +840,10 @@ export default {
             A partir de aqui ya podes redirigir por un login correcto
           */
         }
-      }).catch(err => console.log(err));
+      }).catch(data => {
+        this.$alert.error(data.message, 'Inicio de Sesión Fallido')
+        this.helpers.loading = false
+      })
     }
 
   }
