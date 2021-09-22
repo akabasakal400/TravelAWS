@@ -1,43 +1,61 @@
 <template>
-
-  <v-container fluid>
-    {{icono}}
-    <v-btn color="accent" large @click.stop="iconDialog=true" >
-      Click
-    </v-btn>
-    <IconPicker v-model="iconDialog" :icono.sync="icono" />
-
-  </v-container>
-
+    <v-app light>
+        <v-content>
+            <section>
+                <v-parallax :src="imageLink.sub_main" height="800">
+                    <v-layout column align-center justify-center class="white--text">
+                        <h1 class="white--text mb-2 display-1 text-xs-center" style="font-weight: 900; text-shadow: 3px 2px #000000">Bienvenido a la familia Antigua Travel, Comencemos...</h1>
+                        <v-btn class="blue lighten-2 mt-5" dark large href="/pre-made-themes">
+                        Inicio
+                        </v-btn>
+                    </v-layout>
+                </v-parallax>
+            </section>
+        </v-content>
+    </v-app>
 </template>
 
 <script>
-
-import IconPicker from "~/components/IconPicker"
-
 export default {
-
-  components: {IconPicker},
-
-  layout: 'admin_negocio',
-
-  head(){
-    return{
-      titleTemplate: "Antigua Travel | Inicio"
+  name: "App",
+  data: function() {
+    return {
+      imageLink: {
+        sub_main:
+          "https://www.prensalibre.com/wp-content/uploads/2020/01/Antigua-Guatemala-8.jpg"
+      },
+      subscribed: false
     };
-  },
+    },
+    layout : 'empty',
+    methods: {
+        /*subscribe: function() {
+            this.subscribed = !this.subscribed;
+        }*/
+    },
 
+    computed: {
+        /*imgHeight: function() {
+            var offset = 320;
+            console.log("new image height is " + (this.pageHeight - offset));
+            return this.pageHeight - offset;
+        }*/
+    },
 
-  data(){
-    return{
-      iconDialog: false,
-      icono: ''
+    mounted: function() {
+        //this.calculateHeight();
     }
-  },
+};
+</script>
 
-  methods: {
-  }
-
+<style scoped>
+.finedTitle {
+  font-weight: 900;
+  text-shadow: 2px 2px #000000;
 }
 
-</script>
+.social-icon {
+  font-size: 21px;
+  color: white;
+}
+</style>
