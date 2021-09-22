@@ -2,9 +2,10 @@
     <v-app light>
         <v-main>
             <section>
-                <v-parallax :src="imageLink.sub_main" height="800">
+                <v-parallax :src="imageLink.sub_main" height="800" class="welcomeImage">
                     <v-layout column align-center justify-center class="white--text">
-                        <h1 class="white--text mb-2 display-1 text-xs-center" style="font-weight: 900; text-shadow: 3px 2px #000000">Bienvenido a la familia Antigua Travel, Comencemos...</h1>
+                        <h1 class="white--text mb-2 display-1 text-xs-center" style="font-weight: 900; text-shadow: 3px 2px #000000">Bienvenido a la comunidad de 
+                            Antigua Travel, Comencemos...</h1>
                         <v-btn class="blue lighten-2 mt-5" dark large href="/">
                         Inicio
                         </v-btn>
@@ -22,7 +23,7 @@ export default {
     return {
       imageLink: {
         sub_main:
-          "https://www.prensalibre.com/wp-content/uploads/2020/01/Antigua-Guatemala-8.jpg"
+          "https://agn.gt/wp-content/uploads/2020/11/antigua-guatemala-inguat-e1605737679486.jpg"
       },
       subscribed: false
     };
@@ -43,21 +44,16 @@ export default {
     },
 
     mounted: function() {
-        this.$api.post('/verificacion', { tag : this.$route.query.tag }).then( response => {
+        /*this.$api.post('/verificacion', { tag : this.$route.query.tag }).then( response => {
             console.log(response);
-        }).catch(err => console.log(err));
+        }).catch(err => console.log(err));*/
     }
 };
 </script>
 
 <style scoped>
-.finedTitle {
-  font-weight: 900;
-  text-shadow: 2px 2px #000000;
-}
 
-.social-icon {
-  font-size: 21px;
-  color: white;
+.welcomeImage{
+    margin-top: 4%;
 }
 </style>
