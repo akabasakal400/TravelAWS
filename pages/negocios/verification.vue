@@ -1,6 +1,6 @@
 <template>
     <v-app light>
-        <v-content>
+        <v-main>
             <section>
                 <v-parallax :src="imageLink.sub_main" height="800">
                     <v-layout column align-center justify-center class="white--text">
@@ -11,7 +11,7 @@
                     </v-layout>
                 </v-parallax>
             </section>
-        </v-content>
+        </v-main>
     </v-app>
 </template>
 
@@ -43,7 +43,9 @@ export default {
     },
 
     mounted: function() {
-        //this.calculateHeight();
+        this.$api.post('/verificacion', { tag : this.$route.query.tag }).then( response => {
+            console.log(response);
+        }).catch(err => console.log(err));
     }
 };
 </script>
