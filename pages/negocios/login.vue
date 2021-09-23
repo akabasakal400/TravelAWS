@@ -110,6 +110,7 @@ export default {
       titleTemplate: "Antigua Travel | Inicio de Sesión"
     };
   },
+  middleware: 'LoginConNegocio',
   layout: 'empty',
   data(){
     return {
