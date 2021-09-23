@@ -22,6 +22,7 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
+db.caracteristicas = require('../models/caracteristica.model')(sequelize, Sequelize);
 db.usuario = require('../models/usuario.model')(sequelize, Sequelize);
 db.galeria = require('../models/galeria.model')(sequelize, Sequelize);
 db.negocio = require('../models/negocioSitio.model')(sequelize, Sequelize);
@@ -30,6 +31,9 @@ db.reservacion = require('../models/reservacion.model')(sequelize, Sequelize);
 db.valoracion = require('../models/valoracion.model')(sequelize, Sequelize);
 db.refreshToken = require('../models/refreshToken.model')(sequelize, Sequelize);
 db.tags = require('../models/tags.model')(sequelize, Sequelize);
+
+db.producto.hasMany(db.caracteristicas);
+db.caracteristicas.belongsTo(db.producto);
 
 db.usuario.hasMany(db.negocio);
 db.negocio.belongsTo(db.usuario);

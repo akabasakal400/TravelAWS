@@ -29,6 +29,7 @@ app.use(function(req, res, next) {
 //Instancia de Sequelize
 //Sincronizacion Forzada con eliminacion de datos
 //db.sequelize.sync({ force : true, logging : console.log});
+
 //Sincronizacion simple con persistencia de datos
 db.sequelize.sync({logging : console.log})
 
@@ -39,6 +40,7 @@ require('./routes/reservacion.routes')(app);
 require('./routes/tags.routes')(app);
 require('./routes/usuario.routes')(app);
 require('./routes/valoracion.routes')(app);
+require('./routes/caracteristica.routes')(app);
 
 app.get('/api', function(req, res) {
 

@@ -6,40 +6,6 @@ const Usuario = db.usuario;
 const Tags = db.tags;
 const webConfig = require('../config/webSite.config')
 
-exports.email = async (req, res) => {
-    let name = req.body.name;
-    let email = req.body.email;
-
-    var params = {
-        Destination: {
-            ToAddresses: [
-                email,
-            ]
-        },
-        Message: {
-            Body: {
-                Text: {
-                    Charset: "UTF-8",
-                    Data: `Bienvenido ${name} a Antigua Travel`
-                }
-            },
-            Subject: {
-                Charset: 'UTF-8',
-                Data: 'Test email'
-            }
-        },
-        Source: 'antiguatravelservice@gmail.com',
-    };
-      
-    try {
-        await SES.sendEmail(params).promise();
-        return res.status(200).send({ message : 'Mensaje Enviado Correctamente'});
-    } catch (error) {
-        console.log('Error al enviar el Email', error);
-        return res.status(400).send({ message : "ERROR => " + error});
-    }
-};
-
 exports.getCategoria = (req, res) => {
     Negocio.findAll({
         where : {
@@ -196,6 +162,18 @@ exports.insert = async (req, res) => {
         res.status(500).send({ message : err.message })
     });
 };
+
+exports.getNegocios = (req, res ) => {
+    Negocio.findAll({
+        where : {
+            usuarioId : req.body.usuarioId
+        }
+    }).then( async (negocios) => {
+        res.status(200).send(negocios);
+    }).catch( err => {
+        res.status(500).send({ message : err.message })
+    })
+}
 
 exports.delete = (req, res) => {
     Negocio.destroy({

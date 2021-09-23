@@ -1,6 +1,5 @@
 const db = require("../models");
-const Usuario = db.usuario;
-const Negocio = db.negocio;
+const Usuario = db.usuario; 
 const jwt = require('jsonwebtoken');
 const RefreshToken = db.refreshToken;
 const config = require('../config/auth.config');
@@ -77,7 +76,7 @@ exports.delete = (req, res) => {
 
 exports.getUser = (req, res) => {
     Usuario.findOne({
-        where : { username : req.body.username}
+        where : { id : req.body.id }
     })
     .then(async (usuario) => {
         if(!usuario){
@@ -91,13 +90,10 @@ exports.getUser = (req, res) => {
 };
 
 exports.signin = (req, res) => {
-    var negociosId = [];
-
     Usuario.findOne({
         where : { username : req.body.username }
     })
     .then( async (usuario) => {
-        
         if(!usuario){
             return res.status(404).send({ message : "Error en Usuario o Contraseña!"});
         }
@@ -112,32 +108,13 @@ exports.signin = (req, res) => {
 
         let refreshToken = await RefreshToken.createToken(usuario);
         
-        Negocio.findAll({
-            where : {
-                usuarioId : usuario.id
-            }
-        })
-        .then( async (negociosList) => {
-            /*if(negociosList){
-                negociosList.forEach( negocio => {
-                    negociosId.push(negocio.id)
-                })
-            }else{
-                negociosId.push(0)
-            }*/
-
-            res.status(200).send({
-                id : usuario.id,
-                username : usuario.username,
-                correo : usuario.correo,
-                accessToken : token,
-                refreshToken : refreshToken,
-                negocios : negociosList
-            });
-        })
-        .catch(err => {
-            console.log("Erro Negocios Usuario => ", err);
-        })
+        res.status(200).send({
+            id : usuario.id,
+            username : usuario.username,
+            correo : usuario.correo,
+            accessToken : token,
+            refreshToken : refreshToken
+        });
     })
     .catch( err => {
         console.log("500 ERROR => ", err);
@@ -154,9 +131,7 @@ exports.refreshToken = async (req, res) => {
   
     try {
         let refreshToken = await RefreshToken.findOne({ where: { token: requestToken } });
-    
-        //console.log(refreshToken)
-    
+
         if (!refreshToken) {
             res.status(403).json({ message: "Refresh token is not in database!" });
             return;

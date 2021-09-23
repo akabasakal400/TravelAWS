@@ -4,7 +4,7 @@ module.exports = function (app) {
 
     app.get("/api/usuarios", controller.get);
 
-    app.get('/api/usuario', controller.getUser);
+    app.post('/api/usuario/info', controller.getUser);
 
     app.post('/api/usuario', controller.insert);
 
