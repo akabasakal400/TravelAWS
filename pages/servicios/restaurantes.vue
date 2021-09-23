@@ -473,9 +473,6 @@ export default {
         afterTime = this.$moment(cierra, format);
 
       if (time.isBetween(beforeTime, afterTime)) {
-        console.log(time)
-        console.log(beforeTime)
-        console.log(afterTime)
         return "Abierto"
 
       } else {

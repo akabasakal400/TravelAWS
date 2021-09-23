@@ -100,12 +100,15 @@ export default {
   },*/
   mounted() {
 
+    this.ObtenerAuth()
+
   },
   data() {
     return {
       clipped: false,
       drawer: false,
       fixed: false,
+      usuario_autenticado: {},
       rutas: [
         {
           no: 1,
@@ -126,11 +129,20 @@ export default {
   },
 
   methods: {
+
+    async ObtenerAuth(){
+
+      this.usuario_autenticado = await this.$api.get("/usuario",
+        { username: JSON.parse(sessionStorage.getItem('usuario')).username })
+
+    },
+
     async logoutUser(){
       try {
         this.$alert.confirm('¿Está seguro que desea cerrar sesión?',
           'Cerrar Sesión').then(() => {
 
+          sessionStorage.removeItem('usuario')
           this.$router.push({path: '/negocios/login'})
 
         });
