@@ -78,7 +78,6 @@
                      elevation="0"
                      class="mt-2"
                      x-large
-                     @click="login"
               >
                 <v-icon left color="white" size="30" class="pr-2">
                   fa fa-unlock-alt
@@ -132,7 +131,7 @@ export default {
   },
   methods: {
     async login() {
-      if(this.$refs.formaLogin.validate()){
+      if(this.$refs.frmLogin.validate()){
 
         let params = {
           username: this.form.username,
@@ -140,20 +139,6 @@ export default {
         }
 
         this.loading = true
-
-        this.$api.post('/signin', params).then( data => {
-          console.log(data);
-          if(data.accessToken){
-            sessionStorage.setItem('usuario', JSON.stringify(data));
-
-            this.usuario = JSON.parse(sessionStorage.getItem('usuario'))
-            this.loading = false
-            this.$router.push({path: '/negocios/dashboard'})
-          }
-        }).catch(data => {
-          this.$alert.error(data.message, 'Inicio de Sesión Fallido')
-          this.loading = false
-        })
 
       }
     },

@@ -118,13 +118,13 @@ exports.signin = (req, res) => {
             }
         })
         .then( async (negociosList) => {
-            if(negociosList){
+            /*if(negociosList){
                 negociosList.forEach( negocio => {
                     negociosId.push(negocio.id)
                 })
             }else{
                 negociosId.push(0)
-            }
+            }*/
 
             res.status(200).send({
                 id : usuario.id,
@@ -132,7 +132,7 @@ exports.signin = (req, res) => {
                 correo : usuario.correo,
                 accessToken : token,
                 refreshToken : refreshToken,
-                negocios : negociosId
+                negocios : negociosList
             });
         })
         .catch(err => {

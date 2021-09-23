@@ -467,8 +467,6 @@ export default {
 
   },
 
-  middleware: 'VerificarTieneNegocio',
-
   components: {  },
 
   data() {
