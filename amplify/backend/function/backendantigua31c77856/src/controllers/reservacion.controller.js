@@ -4,11 +4,14 @@ const Op = db.Sequelize.Op;
 
 exports.insert = (req, res) => {
     Reserva.create({
+        cantidad : req.body.cantidad,
+        hora : req.body.hora,
         fechaInicio : req.body.fechaInicio,
         fechaFinal : req.body.fechaFinal,
         valor : req.body.valor,
         usuarioId : req.body.usuarioId,
-        negocioId : req.body.negocioId
+        negocioId : req.body.negocioId,
+        productoServicioId : req.body.productoId
     }).then(() => {
         res.send({ message : 'Usuario Registrado Correctamente!!!'});
     }).catch(err => {

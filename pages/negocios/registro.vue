@@ -373,8 +373,11 @@
 </template>
 
 <script>
+import autHeader from '../../src/services/auth-header';
+import authHeader from '../../src/services/auth-header';
 
 export default {
+  
 
   mounted() {
     //this.geolocate()
@@ -525,7 +528,7 @@ export default {
           usuarioId: JSON.parse(sessionStorage.getItem('usuario')).id
         }
 
-        await this.$api.post("/negocio", params).then( data => {
+        await this.$api.post("/negocio", params, { headers : autHeader()}).then( data => {
           this.$alert.registro_exitoso()
           this.$router.push({ path: '/' })
         } ).catch(data => {

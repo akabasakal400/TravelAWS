@@ -49,6 +49,9 @@ db.reservacion.belongsTo(db.negocio);
 db.usuario.hasMany(db.valoracion);
 db.valoracion.belongsTo(db.usuario);
 
+db.producto.hasMany(db.reservacion);
+db.reservacion.belongsTo(db.producto);
+
 db.negocio.hasMany(db.valoracion);
 db.valoracion.belongsTo(db.negocio);
 

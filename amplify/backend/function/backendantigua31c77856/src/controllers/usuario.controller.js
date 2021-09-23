@@ -1,5 +1,6 @@
 const db = require("../models");
 const Usuario = db.usuario;
+const Negocio = db.negocio;
 const jwt = require('jsonwebtoken');
 const RefreshToken = db.refreshToken;
 const config = require('../config/auth.config');
@@ -51,7 +52,7 @@ exports.insert = (req, res) => {
                 correo : req.body.correo,
                 rol : req.body.rol,
                 nacimiento : req.body.nacimiento,
-                genero : req.body.rol,
+                genero : req.body.genero,
                 img : req.body.img
             }).then(() => {
                 res.send({ message : 'Usuario Registrado!!!'})
@@ -90,6 +91,8 @@ exports.getUser = (req, res) => {
 };
 
 exports.signin = (req, res) => {
+    var negociosId = [];
+
     Usuario.findOne({
         where : { username : req.body.username }
     })
@@ -109,13 +112,32 @@ exports.signin = (req, res) => {
 
         let refreshToken = await RefreshToken.createToken(usuario);
         
-        res.status(200).send({
-            id : usuario.id,
-            username : usuario.username,
-            correo : usuario.correo,
-            accessToken : token,
-            refreshToken : refreshToken
-        });
+        Negocio.findAll({
+            where : {
+                usuarioId : usuario.id
+            }
+        })
+        .then( async (negociosList) => {
+            if(negociosList){
+                negociosList.forEach( negocio => {
+                    negociosId.push(negocio.id)
+                })
+            }else{
+                negociosId.push(0)
+            }
+
+            res.status(200).send({
+                id : usuario.id,
+                username : usuario.username,
+                correo : usuario.correo,
+                accessToken : token,
+                refreshToken : refreshToken,
+                negocios : negociosId
+            });
+        })
+        .catch(err => {
+            console.log("Erro Negocios Usuario => ", err);
+        })
     })
     .catch( err => {
         console.log("500 ERROR => ", err);

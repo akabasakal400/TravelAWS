@@ -5,6 +5,12 @@ module.exports = (sequelize, Sequelize) => {
             autoIncrement : true,
             primaryKey : true
         },
+        cantidad : {
+            type : Sequelize.INTEGER
+        },
+        hora : {
+            type : Sequelize.TIME
+        },
         fechaInicio : {
             type : Sequelize.DATE
         },

@@ -21,8 +21,6 @@ export default {
 
   layout: 'admin_negocio',
 
-  middleware: 'VerificarTieneNegocio',
-
   head(){
     return{
       titleTemplate: "Antigua Travel | Inicio"

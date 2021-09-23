@@ -35,6 +35,7 @@ db.sequelize.sync({logging : console.log})
 require('./routes/galeria.routes')(app);
 require('./routes/negocioSitio.routes')(app);
 require('./routes/productoServicio.routes')(app);
+require('./routes/reservacion.routes')(app);
 require('./routes/tags.routes')(app);
 require('./routes/usuario.routes')(app);
 require('./routes/valoracion.routes')(app);

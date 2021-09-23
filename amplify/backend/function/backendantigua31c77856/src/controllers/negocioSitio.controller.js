@@ -4,6 +4,7 @@ const db = require('../models');
 const Negocio = db.negocio;
 const Usuario = db.usuario;
 const Tags = db.tags;
+const webConfig = require('../config/webSite.config')
 
 exports.email = async (req, res) => {
     let name = req.body.name;
@@ -81,7 +82,7 @@ exports.get = (req, res) => {
                 case 'H' :
                     hoteles.push(negocio);
                     break;
-                case 'S' :
+                case 'D' :
                     sitios.push(negocio);
                     break;
                 case 'C' : 
@@ -104,9 +105,28 @@ exports.get = (req, res) => {
     });
 };
 
-exports.insert = (req, res) => {
-    const tags = req.body.tags;
+exports.verification = async (req, res) => {
+    Negocio.update(
+        {
+            aut : 'v'
+        },
+        {
+            where : {
+                id : req.body.tag
+            }
+        }
+    )
+    .then(() => {
+        res.status(200).send({ message : 'VERIFICADO'})
+    })
+    .catch(err => {
+        res.status(500).send({ message : err.message})
+    })
+}
 
+exports.insert = async (req, res) => {
+    const tags = req.body.tags;
+    
     Negocio.create({
         nombre : req.body.nombre,
         categoria : req.body.categoria,
@@ -127,7 +147,7 @@ exports.insert = (req, res) => {
 
         Tags.bulkCreate(insertTags)
         .then(() => {
-            /*Usuario.findOne({
+            Usuario.findOne({
                 where : {
                     id : req.body.usuarioId
                 }
@@ -145,7 +165,7 @@ exports.insert = (req, res) => {
                         Body : {
                             Text : {
                                 Charset: "UTF-8",
-                                Data: `Damos la bienvenida a ${req.body.nombre} a la familia AntiguaTravel, para completar el proceso de registro ingresa al siguiente link LINK DEL API PARA CAMBIAR LA BANDERA DEL NEGOCIO`
+                                Data: `Damos la bienvenida a ${req.body.nombre} a la comunidad AntiguaTravel, para completar el proceso de registro ingresa al siguiente link ${webConfig.webURL}/negocios/verification?tag=${negocio.id}`
                             }
                         },
                         Subject: {
@@ -158,22 +178,20 @@ exports.insert = (req, res) => {
                 
                 try {
                     await SES.sendEmail(params).promise();
-                    //return res.status(200).send({ message : 'Mensaje Enviado Correctamente'});
+                    return res.status(200).send({ message : 'Negocio Registrado!!'});
                 } catch (error) {
                     //console.log('Error al enviar el Email', error);
                     return res.status(400).send({ message : "ERROR => " + error});
                 }
             })
-            .catch(
+            .catch( err => {
                 res.status(500).send({ message : err.message })
-            )*/
+            })
         })
         .catch( err => {
             res.status(500).send({ message : err.message })    
         })
-
-        res.status(200).send({ message : negocio.id });
-
+        //res.status(200).send({ message : negocio.id });
     }).catch( err => {
         res.status(500).send({ message : err.message })
     });
