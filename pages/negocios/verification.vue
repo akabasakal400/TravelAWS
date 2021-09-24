@@ -10,24 +10,13 @@
                         Inicio
                         </v-btn>
                     </v-layout>
-                </v-parallax>            
+                </v-parallax>
             </section>
         </v-main>
     </v-app>
 </template>
 
 <script>
-import { createApp } from 'vue';
-import App from '../index.vue';
-import { 
-    applyPolyfills,
-    defineCustomElements
-} from '@aws-amplify/ui-components/loader';
-import Amplify from 'aws-amplify';
-import awsconfig from '../../src/aws-exports';
-
-Amplify.configure(awsconfig);
-
 export default {
   name: "App",
   data: function() {
@@ -44,9 +33,6 @@ export default {
         /*subscribe: function() {
             this.subscribed = !this.subscribed;
         }*/
-    },
-    components : {
-        VImageInput,
     },
 
     computed: {

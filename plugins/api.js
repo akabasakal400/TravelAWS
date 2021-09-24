@@ -32,9 +32,14 @@ export default ({ app, store, $axios }, inject) => {
           //withCredentials: true,
           timeout: this.timeout,
         }
+
         if (files){
           config.headers = { 'content-type': 'multipart/form-data' }
         }
+        /*const usuario = JSON.parse(sessionStorage.getItem('usuario'));
+        if(usuario.accessToken){
+          config.headers['x-access-token'] = usuario.accessToken ?? ''
+        }*/
         processRequest($axios.post(process.env.API + service,params, config),resolve,reject)
       })
     },

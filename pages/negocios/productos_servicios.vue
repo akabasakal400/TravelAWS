@@ -37,15 +37,16 @@
       />
     </v-card-actions>
 
-    <v-card>
+    <v-card outlined elevation="0" style="border-radius: 10px;">
 
       <v-data-table
         :headers="productos.tabla.headers"
         :items="productos.listado"
-        item-key="productoID"
-        sort-by="productoID"
+        item-key="productoId"
+        sort-by="productoId"
         sort-desc
         class="elevation-1"
+        style="border-radius: 10px;"
         :loading="productos.tabla.loading"
         loading-text="Cargando... Por favor espere un momento."
         no-data-text='Aún no hay productos para mostrar, por favor vuelva a intentarlo.'
@@ -76,6 +77,7 @@
 
           <v-toolbar
             flat
+            style="border-radius: 10px;"
           >
             <v-tooltip bottom v-if="productos.tabla.check">
               <template v-slot:activator="{ on, attrs }">

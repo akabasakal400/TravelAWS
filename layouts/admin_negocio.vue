@@ -7,7 +7,7 @@
       app
       dark
       color="secondary"
-      width="300"
+      width="350"
     >
       <v-list>
 
@@ -17,9 +17,9 @@
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title class="text-h6">
-              John Leider
+              {{ usuario_autenticado.nombre }}
             </v-list-item-title>
-            <v-list-item-subtitle>john@vuetifyjs.com</v-list-item-subtitle>
+            <v-list-item-subtitle>Administrar negocios</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
 
@@ -118,6 +118,12 @@ export default {
         },
         {
           no: 2,
+          icon: 'fa fa-briefcase',
+          title: 'Listado de Negocios',
+          to: '/negocios/listado_negocios'
+        },
+        {
+          no: 3,
           icon: 'fa fa-cubes',
           title: 'Productos y Servicios',
           to: '/negocios/productos_servicios'
@@ -132,8 +138,8 @@ export default {
 
     async ObtenerAuth(){
 
-      this.usuario_autenticado = await this.$api.get("/usuario",
-        { username: JSON.parse(sessionStorage.getItem('usuario')).username })
+      this.usuario_autenticado = await this.$api.post("/usuario/info",
+        { id: JSON.parse(sessionStorage.getItem('usuario')).id })
 
     },
 
