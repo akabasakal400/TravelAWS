@@ -374,7 +374,6 @@
 
 <script>
 import autHeader from '../../src/services/auth-header';
-import authHeader from '../../src/services/auth-header';
 
 export default {
 
