@@ -26,6 +26,7 @@
         dense
         hide-details
         label="Busqueda"
+        class="animate__animated animate__jackInTheBox"
         prepend-inner-icon="fa fa-search"
         style="max-width: 300px"
         v-model="productos.tabla.busqueda"
@@ -37,7 +38,9 @@
       />
     </v-card-actions>
 
-    <v-card outlined elevation="0" style="border-radius: 10px;">
+    <v-card outlined elevation="0" style="border-radius: 10px;"
+            class="animate__animated animate__zoomIn"
+    >
 
       <v-data-table
         :headers="productos.tabla.headers"
@@ -106,10 +109,32 @@
             </v-toolbar-title>
 
             <v-divider
-              class="mx-4 hidden-sm-and-down"
+              class="mx-4"
               inset
               vertical
-            ></v-divider>
+            />
+
+            <v-col cols="10" lg="3"
+                   class="mt-7 hidden-md-and-down"
+            >
+              <v-select
+                :items="negocios.listado"
+                v-model="negocios.seleccionado"
+                label="Negocio Actual"
+                item-value="id"
+                item-text="nombre"
+                @change="SeleccionarNegocio"
+                outlined
+                dense
+                color="black"
+                item-color="black"
+              >
+                <v-icon slot="prepend-inner" color="complementario" class="mx-2">
+                  fa fa-briefcase
+                </v-icon>
+              </v-select>
+            </v-col>
+
 
             <v-spacer />
 
@@ -138,6 +163,28 @@
             </v-btn>
 
           </v-toolbar>
+
+          <v-col cols="7" sm="6" md="4"
+                 class="mt-n2 hidden-lg-and-up"
+          >
+            <v-select
+              :items="negocios.listado"
+              v-model="negocios.seleccionado"
+              label="Negocio Actual"
+              item-value="negocioId"
+              item-text="nombre"
+              @change="SeleccionarNegocio"
+              outlined
+              dense
+              color="black"
+              item-color="black"
+            >
+              <v-icon slot="prepend-inner" color="complementario" class="mx-2">
+                fa fa-briefcase
+              </v-icon>
+            </v-select>
+          </v-col>
+
 
 
         </template>
@@ -268,11 +315,22 @@
             <v-text-field
               outlined
               dense
-              v-model="productos.seleccionado.nombreProducto"
+              v-model="productos.seleccionado.nombre"
               :rules="[ v => v && v.length > 0 || 'El nombre es obligatorio' ]"
               label="Nombre del Producto"
               color="black"
               prepend-icon="fa fa-heading"
+            />
+
+            <v-text-field
+              outlined
+              dense
+              v-model="productos.seleccionado.valor"
+              type="number"
+              :rules="[ v => v && v.length > 0 || 'El precio es obligatorio' ]"
+              label="Precio del Producto"
+              color="black"
+              prepend-icon="fa fa-money-bill-wave-alt"
             />
 
             <v-file-input
@@ -313,7 +371,21 @@
 
             </v-file-input>
 
-            <div class="mb-6">
+            <v-textarea
+              outlined
+              dense
+              no-resize
+              clearable
+              clear-icon="fa fa-times-circle"
+              v-model="productos.seleccionado.descripcion"
+              :rules="[ v => v && v.length > 0 || 'La descripción es obligatoria' ]"
+              rows="3"
+              label="Descripción del Producto"
+              prepend-icon="fa fa-edit"
+              color="black"
+            />
+
+            <div class="mb-6" v-if="productos.seleccionado.id > 0">
               <h3 class="mt-1 hidden-sm-and-down black--text">
                 Características del Producto
                 <div class="subheading mt-2" style="font-family: Poppins, sans-serif;">
@@ -338,7 +410,7 @@
             <div
               v-for="(caracteristica, i) in productos.seleccionado.caracteristicas"
               :key="i"
-
+              v-if="productos.seleccionado.productoId > 0"
             >
               <IconPicker v-model="caracteristica.dialogo" :icono.sync="caracteristica.icono" />
               <v-row>
@@ -395,7 +467,7 @@
               <v-divider class="mb-5" />
             </div>
 
-            <div>
+            <div v-if="productos.seleccionado.productoId > 0">
 
               <v-btn outlined
                      class="hidden-sm-and-down"
@@ -466,7 +538,7 @@ export default {
   },
 
   mounted(){
-
+    this.ObtenerNegocios()
   },
 
   middleware: 'VerificarTieneNegocio',
@@ -483,6 +555,10 @@ export default {
       busqueda: {
         realizada: false,
         texto: null
+      },
+      negocios: {
+        listado: [],
+        seleccionado: {}
       },
       productos: {
         tabla: {
@@ -518,18 +594,58 @@ export default {
   },
 
   methods: {
+
     async ObtenerProductos(){
 
+      let params = {
+        negocioId: this.negocios.seleccionado.id
+      }
+
+//      this.productos.tabla.loading = true
+
+      await this.$api.get("/productos", params).then(data => {
+
+        this.productos.tabla.loading = false
+        this.productos.listado = data
+
+      }).catch(data => {
+        console.error(data)
+        this.$alert.error('Ocurrió un error interno, vuelve a intentarlo', 'Error Interno')
+        this.productos.tabla.loading = false
+      })
+
     },
+
+    async ObtenerNegocios(){
+
+      let params = {
+        usuarioId: JSON.parse(sessionStorage.getItem('usuario')).id
+      }
+
+      await this.$api.post("/negocios/usuario", params).then(data => {
+
+        this.negocios.listado = data
+        this.negocios.seleccionado = Object.assign({}, data[0])
+        this.ObtenerProductos()
+
+      })
+
+    },
+
     async ObtenerCaracteristicas(){
 
     },
+
     async Busqueda(){
 
     },
-    ObtenerProductoxPagina(){
-      this.ObtenerProductos()
+
+    SeleccionarNegocio(){
+
+
+
     },
+
     MostrarDialogoNuevo(){
       this.dialogos.producto = true
       this.$refs.frmProducto?.resetValidation()
@@ -547,43 +663,25 @@ export default {
 
       if(this.$refs.frmProducto.validate()){
 
-        let formData = new FormData();
+        let params = {
 
-        let carac = []
+          nombre: this.productos.seleccionado.nombre,
+          descripcion: this.productos.seleccionado.descripcion,
+          valor: this.productos.seleccionado.valor,
+          img: null,
+          negocioId: this.negocios.seleccionado.id
 
-        this.productos.seleccionado.caracteristicas.forEach( caracteristica => {
-
-          let obj = {
-            nombre: caracteristica.nombre,
-            valor: caracteristica.valor,
-            icono: caracteristica.icono
-          }
-
-          carac.push(obj)
-
-        })
-
-        formData.append('nombre', this.productos.seleccionado.nombre);
-        formData.append('producto_imagen', this.productos.seleccionado.imagen);
-        formData.append('caracteristicas', carac);
-
-        let config = {
-        //withCredentials: true,
-          timeout: 5000,
-          headers: { 'content-type': 'multipart/form-data' }
         }
 
-        this.$axios.post('TU URL', formData, config)
-          .then((response) => {
-            this.ObtenerProductos()
-            this.CerrarDialogoProducto()
+        await this.$api.post("/producto", params).then(data => {
 
-            this.$alert.exito("El producto o servicio, fue ingresado con éxito", "Ingreso Exitoso")
-          })
-          .catch((error) => {
-            console.error(error)
-            this.$alert.error(error, "Ocurrió un Error Interno")
-          });
+          this.ObtenerProductos()
+          this.CerrarDialogoProducto()
+
+        }).catch(data => {
+          console.error(data)
+          this.$alert.error('Ocurrió un error interno, vuelve a intentarlo', 'Error Interno')
+        })
 
       }
 

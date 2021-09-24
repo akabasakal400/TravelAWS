@@ -27,6 +27,7 @@
         dense
         hide-details
         label="Busqueda"
+        class="animate__animated animate__jackInTheBox"
         prepend-inner-icon="fa fa-search"
         style="max-width: 300px"
         v-model="negocios.tabla.busqueda"
@@ -38,13 +39,15 @@
       />
     </v-card-actions>
 
-    <v-card outlined elevation="0" style="border-radius: 10px;">
+    <v-card outlined elevation="0" style="border-radius: 10px;"
+            class="animate__animated animate__zoomIn"
+    >
 
       <v-data-table
         :headers="negocios.tabla.headers"
         :items="negocios.listado"
-        item-key="negocioId"
-        sort-by="negocioId"
+        item-key="id"
+        sort-by="id"
         sort-desc
         class="elevation-1"
         style="border-radius: 10px;"

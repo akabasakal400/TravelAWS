@@ -14,7 +14,7 @@ export default ({ app, store, $axios }, inject) => {
   const api = {
     timeout: 5000,
     outboxing: false,
-    get (service, params = {}){
+    get (service, params = {}, data = null){
       store.commit('setLoading',true)
       return new Promise((resolve, reject) => {
         let config = {
@@ -22,6 +22,8 @@ export default ({ app, store, $axios }, inject) => {
           //withCredentials: true,
           timeout: this.timeout
         }
+        console.log(data)
+        config.data = data ?? null
         processRequest($axios.get(process.env.API + service, config),resolve,reject)
       })
     },

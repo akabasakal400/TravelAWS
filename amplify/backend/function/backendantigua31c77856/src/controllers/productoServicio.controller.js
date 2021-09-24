@@ -33,7 +33,7 @@ exports.getProducto = (req, res) => {
 
 exports.getProductos = (req, res) => {
     Producto.findAll({
-        where : { negocioId : req.body.negocioId}
+        where : { negocioId : JSON.parse(req.params).negocioId }
     })
     .then(async (productos) => {
         if(!productos){
