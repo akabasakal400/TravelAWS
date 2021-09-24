@@ -181,8 +181,33 @@ exports.delete = (req, res) => {
             id : req.body.id
         }
     }).then(() => {
-        res.send({ message : 'Negocio Eliminado Correctamente!'});
+        res.status(200).send({ message : 'Negocio Eliminado Correctamente!'});
     }).catch(err =>{
         res.status(500).send({ message : err.message});
     });
 };
+
+exports.update = (req, res) => {
+    Negocio.update({
+        nombre : req.body.nombre,
+        categoria : req.body.categoria,
+        direccion : req.body.direccion,
+        abre : req.body.abre,
+        cierra : req.body.cierra,
+        telefono : req.body.telefono,
+        descripcion : req.body.descripcion,
+        lat : req.body.coordenadas.latitud,
+        lng : req.body.coordenadas.longitud,
+    },
+    {
+        where : {
+            id : req.body.id
+        }
+    })
+    .then(() => {
+        res.status(200).send({ message : "Actualizado!"});
+    })
+    .catch( err => {
+        res.status(500).send({ message : err.message })
+    })
+}

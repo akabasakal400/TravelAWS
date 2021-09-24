@@ -10,8 +10,10 @@ module.exports = function(app){
 
     app.post('/api/negocios/usuario', controller.getNegocios);
     
-    app.post('/api/negocio', [authJWT.verifyToken], controller.insert);
-    //app.post('/api/negocio', controller.insert);
+    //app.post('/api/negocio', [authJWT.verifyToken], controller.insert);
+    app.post('/api/negocio', controller.insert);
+
+    app.put('/api/negocio', controller.update);
 
     app.delete('/api/negocio', controller.delete);
 }
