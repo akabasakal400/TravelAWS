@@ -20,7 +20,7 @@ export default {
       { hid: 'description', name: 'description', content: process.env.npm_package_description || '' }
     ],
     script: [
-      { src: "https://kit.fontawesome.com/f968821922.js", crossOrigin: "anonymous"}
+      { src: "https://kit.fontawesome.com/f968821922.js", crossOrigin: "anonymous"},
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
@@ -56,11 +56,34 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     '@nuxtjs/axios',
-    '@nuxtjs/firebase',
+    [
+      '@nuxtjs/firebase',
+      {
+        config: {
+          apiKey: "AIzaSyB1VHsTl-vmV3BP0gUGpVkI8pdK7JlTBmo",
+          authDomain: "antiguatravel-e7bee.firebaseapp.com",
+          projectId: "antiguatravel-e7bee",
+          storageBucket: "antiguatravel-e7bee.appspot.com",
+          messagingSenderId: "1048267483085",
+          appId: "1:1048267483085:web:22cb3475a82dd67d050684",
+          measurementId: "G-X2QTT1Z4EP"
+        },
+        onFirebaseHosting: true,
+        services: {
+          firestore: true,
+          storage: true,
+          database: true,
+        },
+        functions: {
+          emulatorPort: 8001
+        },
+        database: {
+          emulatorPort: 9000,
+          emulatorHost: 'localhost',
+        }
+      }
+    ],
     'nuxt-gmaps'
-      /*services: {
-        auth: true // Just as example. Can be any other service.
-      }*/
   ],
 
   moment: {
@@ -72,23 +95,6 @@ export default {
   gmaps: {
     key: "AIzaSyB-FoMfaq00VyuS7uSWR3af7Rmw2r_1CY8",
     libraries: ['drawing']
-  },
-
-  firebase: {
-    config: {
-      apiKey: "AIzaSyB1VHsTl-vmV3BP0gUGpVkI8pdK7JlTBmo",
-      authDomain: "antiguatravel-e7bee.firebaseapp.com",
-      projectId: "antiguatravel-e7bee",
-      storageBucket: "antiguatravel-e7bee.appspot.com",
-      messagingSenderId: "1048267483085",
-      appId: "1:1048267483085:web:22cb3475a82dd67d050684",
-      measurementId: "G-X2QTT1Z4EP"
-    },
-    services: {
-      firestore: true,
-      storage: true,
-      realtimeDb: true,
-    },
   },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios

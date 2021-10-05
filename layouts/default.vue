@@ -784,14 +784,6 @@ export default {
     },
 
     RegistrarUsuario(){
-      //Así se hacen los posts:
-      /* this.$api.post('URL', params).then( data => {
-            //Aquí se escribe lo que pasa al recibir la data
-            //Si viene un json, asi se acceden a las keys: data.llaveQueQueres
-          }).catch( data => {
-            //Se obtienen los errores en la petición
-          })
-      */
       let params = {
         nombre: this.form.nombre,
         telefono: this.form.telefono,
@@ -807,22 +799,46 @@ export default {
         this.CerrarDialogoRegistro()
       }).catch(err => console.log(err))
     },
+
     CambiarPassword(){
 
     },
 
-    Login(){
+    Login(firebaseReg = false){
       let params = {
         username: this.form.username,
         password: md5(this.form.password) + ''
       }
       this.helpers.loading = true
-      this.$api.post('/signin', params).then( data => {
-        console.log(data);
-        if(data.accessToken){
+
+      const usersRef = this.$fire.database.ref('Users')
+
+      this.$api.post('/signin', params).then( async data => {
+        if (data.accessToken) {
           sessionStorage.setItem('usuario', JSON.stringify(data));
 
           this.usuario = JSON.parse(sessionStorage.getItem('usuario'))
+          await this.$api.post("/usuario/info", { id: this.usuario.id } )
+            .then(async data => {
+              try{
+
+                let user = {}
+                user[data.username] = {
+                  id: data.id,
+                  negocioId: -1,
+                  nombreNegocio: '',
+                  username: data.username,
+                  image: '',
+                  correo: data.correo,
+                  nombre: data.nombre
+                }
+                await usersRef.set(user)
+              }
+              catch (e) {
+                console.error(e)
+              }
+            })
+
           this.helpers.loading = false
           this.CerrarDialogoLogin()
           /*

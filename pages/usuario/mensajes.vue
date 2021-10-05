@@ -86,7 +86,9 @@
         <v-list-item-avatar v-if="mensaje.id === mensajes.ids[0]">
           <v-img :src="'https://www.timandorra.com/wp-content/uploads/2016/11/Imagen-no-disponible-282x300.png'" />
         </v-list-item-avatar>
-        <v-list-item-content :class="mensaje.id === mensajes.ids[1] ? 'text-right align-self-start' : null">
+        <v-list-item-content :class="mensaje.id === mensajes.ids[1] ? 'text-right align-self-start' : null"
+                             color="white"
+        >
           <v-list-item-title v-text="'Fernando Sagastume'" />
           <v-list-item-subtitle v-text="mensaje.mensaje" />
         </v-list-item-content>
@@ -102,13 +104,17 @@
 
 <script>
 
+import * as Axios from "axios";
+import firebase from 'firebase'
+
 export default {
   mounted() {
     const uniqueValues = new Set(this.mensajes.listado.map(v => v.id));
     this.mensajes.ids = [...uniqueValues];
+    this.ObtenerMensajes()
   },
 
-  layout: 'empty',
+  layout: 'chat',
 
   data () {
     return {
@@ -149,7 +155,28 @@ export default {
       },
       title: 'Vuetify.js'
     }
+  },
+
+  methods: {
+
+   async ObtenerMensajes(){
+
+     const messageRef = this.$fire.database.ref("Chats")
+
+     Axios.get(messageRef.toString() + '.json').then(response => {
+       console.log(response.data)
+     })
+
+     const messageRefUsers = this.$fire.database.ref("Users")
+
+     Axios.get(messageRefUsers.toString() + '.json').then(response => {
+       console.log(response.data)
+     })
+
+   }
+
   }
+
 }
 
 </script>

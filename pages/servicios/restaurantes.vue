@@ -198,7 +198,7 @@
               ></v-img>
 
               <v-card-title>
-                <h4>
+                <h4 class="mr-2">
                   {{ restaurante.nombre }}
                 </h4>
                 <v-spacer/>
@@ -260,6 +260,17 @@
                     fa fa-compass
                   </v-icon>
                   Explorar
+                </v-btn>
+
+                <v-btn
+                  color="black"
+                  outlined
+                  @click="EnviarMensaje(restaurante)"
+                >
+                  <v-icon left color="primary darken-2">
+                    fa fa-paper-plane
+                  </v-icon>
+                  Contactar
                 </v-btn>
 
               </v-card-actions>
@@ -412,6 +423,7 @@ export default {
 
   mounted() {
     this.ObtenerRestaurantes()
+    this.ObtenerAuth()
   },
 
   data(){
@@ -432,6 +444,7 @@ export default {
         { texto: 'Fecha Planeada', icono: 'fa fa-calendar-day' },
         { texto: 'Rango de Precios', icono: 'fa fa-money-bill-wave' },
       ],
+      auth: {},
       range: [1,1000],
       markers: [],
       places: [],
@@ -463,6 +476,46 @@ export default {
 
       } )
 
+    },
+
+    async ObtenerAuth(){
+      this.auth = await this.$api.post("/usuario/info",
+        { id: JSON.parse(sessionStorage.getItem('usuario')).id })
+    },
+
+    async EnviarMensaje(restaurante){
+      const usersRef = this.$fire.database.ref('Users')
+      await this.$api.post("/usuario/info", { id: restaurante.usuarioId })
+        .then(async data => {
+          let encargado = data
+          try {
+            let userNegocio = {}
+            userNegocio[encargado.username] = {
+              id: restaurante.usuarioId,
+              negocioId: restaurante.id,
+              nombreNegocio: restaurante.nombre,
+              username: encargado.username,
+              image: '',
+              correo: encargado.correo,
+              nombre: encargado.nombre
+            }
+
+            const chatsRef = this.$fire.database.ref('Chats')
+            let chat = {}
+            chat["chat"+this.auth.id+"-"+encargado.id] = {
+              miembros: [this.auth.username, encargado.username],
+              ultimoMensaje: ''
+            }
+
+            await usersRef.set(userNegocio)
+            await chatsRef.set(chat)
+
+            this.$router.push({path: '/usuario/mensajes'})
+
+          } catch (e) {
+            console.error(e)
+          }
+        })
     },
 
     VerificarHora(abre, cierra){
